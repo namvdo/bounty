@@ -2,7 +2,7 @@
 
 **Bo**unded **Un**certain**ty** Numerical Toolbox
 
-BOUNTY is an interactive, web-based research tool for exploring invariant objects in set-valued dynamical systems with additive bounded noise. It was developed as part of the Applied Computing Project (ACP2) research course at the University of Oulu.
+BOUNTY is an interactive, web-based research tool for exploring invariant objects in set-valued dynamical systems with additive bounded noise. It was developed as part of the Applied Computing Project (ACP2) research course at the University of Oulu and in collaboration with the DynamIC (Dynamical Systems at Imperial College) research group, Imperial College London.
 
 #### Live at: https://namvdo.github.io/set-valued-viz
 
