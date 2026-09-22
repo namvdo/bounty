@@ -6,10 +6,32 @@ export const ZOOM_IN_FACTOR = 0.8;
 export const ZOOM_OUT_FACTOR = 1.25;
 
 export const DEFAULT_VIEW_RANGE: ViewRange = {
+  xMin: -5,
+  xMax: 5,
+  yMin: -9,
+  yMax: 9
+};
+
+/** Start near the usual fixed and periodic orbits without restricting computation. */
+export const DEFAULT_VIEWPORT_RANGE: ViewRange = {
   xMin: -3,
   xMax: 3,
   yMin: -3,
   yMax: 3
+};
+
+export const orthographicFrustumSize = (
+  range: ViewRange,
+  viewportWidth: number,
+  viewportHeight: number,
+  padding = 0.12,
+): { width: number; height: number } => {
+  const aspect = viewportWidth / viewportHeight;
+  const height = Math.max(
+    range.yMax - range.yMin + padding * 2,
+    (range.xMax - range.xMin + padding * 2) / aspect,
+  );
+  return { width: height * aspect, height };
 };
 
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));

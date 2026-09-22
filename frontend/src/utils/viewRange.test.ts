@@ -1,12 +1,35 @@
 import { describe, expect, it } from 'vitest';
 import {
+  DEFAULT_VIEW_RANGE,
+  DEFAULT_VIEWPORT_RANGE,
   MIN_VIEW_SPAN,
   constrainViewRange,
   normalizeViewRange,
   displayLimitForRange,
+  orthographicFrustumSize,
   RANGE_LIMIT,
   zoomViewRange
 } from './viewRange';
+
+describe('default computation and camera ranges', () => {
+  it('keeps the larger computation domain while framing the central orbit region', () => {
+    expect(DEFAULT_VIEW_RANGE).toEqual({ xMin: -5, xMax: 5, yMin: -9, yMax: 9 });
+    expect(DEFAULT_VIEWPORT_RANGE).toEqual({ xMin: -3, xMax: 3, yMin: -3, yMax: 3 });
+    expect(constrainViewRange(DEFAULT_VIEWPORT_RANGE, DEFAULT_VIEW_RANGE)).toEqual(DEFAULT_VIEWPORT_RANGE);
+    expect(constrainViewRange(
+      zoomViewRange(DEFAULT_VIEWPORT_RANGE, 3), DEFAULT_VIEW_RANGE,
+    )).toEqual(DEFAULT_VIEW_RANGE);
+  });
+
+  it('fits both axes on narrow and wide viewports without distorting coordinates', () => {
+    for (const [width, height] of [[1600, 900], [600, 900]]) {
+      const frustum = orthographicFrustumSize(DEFAULT_VIEW_RANGE, width, height);
+      expect(frustum.width).toBeGreaterThan(10);
+      expect(frustum.height).toBeGreaterThan(18);
+      expect(frustum.width / frustum.height).toBeCloseTo(width / height);
+    }
+  });
+});
 
 describe('normalizeViewRange', () => {
   it('orders and clamps values', () => {

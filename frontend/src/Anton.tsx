@@ -9,11 +9,13 @@ import { Viewport } from './components/layout/Viewport';
 import { normalizeParams } from './utils/paramUtils';
 import {
     DEFAULT_VIEW_RANGE,
+    DEFAULT_VIEWPORT_RANGE,
     RANGE_LIMIT,
     ZOOM_IN_FACTOR,
     ZOOM_OUT_FACTOR,
     constrainViewRange,
     normalizeViewRange,
+    orthographicFrustumSize,
     zoomViewRange
 } from './utils/viewRange';
 import {
@@ -723,7 +725,7 @@ const SetValuedViz = () => {
     });
     const [viewRange, setViewRange] = useState<ViewRange>(DEFAULT_VIEW_RANGE);
     const computationViewRangeRef = useRef(viewRange);
-    const [viewportRange, setViewportRange] = useState<ViewRange>(DEFAULT_VIEW_RANGE);
+    const [viewportRange, setViewportRange] = useState<ViewRange>(DEFAULT_VIEWPORT_RANGE);
     const viewportRangeRef = useRef(viewportRange);
     const viewportRangeTargetRef = useRef(viewportRange);
     const gridGroupRef = useRef<THREE.Group | null>(null);
@@ -751,12 +753,8 @@ const SetValuedViz = () => {
         const camera = cameraRef.current;
         if (!camera) return;
 
-        const gridHeight = range.yMax - range.yMin;
-        const padding = 0.12;
         const { width, height } = readViewportSize();
-        const aspect = width / height;
-        const frustumHeight = gridHeight + padding * 2;
-        const frustumWidth = frustumHeight * aspect;
+        const { width: frustumWidth, height: frustumHeight } = orthographicFrustumSize(range, width, height);
 
         camera.left = -frustumWidth / 2;
         camera.right = frustumWidth / 2;
@@ -845,10 +843,10 @@ const SetValuedViz = () => {
     const resetViewRange = useCallback(() => {
         cancelViewRangeTransition();
         computationViewRangeRef.current = DEFAULT_VIEW_RANGE;
-        viewportRangeRef.current = DEFAULT_VIEW_RANGE;
-        viewportRangeTargetRef.current = DEFAULT_VIEW_RANGE;
+        viewportRangeRef.current = DEFAULT_VIEWPORT_RANGE;
+        viewportRangeTargetRef.current = DEFAULT_VIEWPORT_RANGE;
         setViewRange(DEFAULT_VIEW_RANGE);
-        setViewportRange(DEFAULT_VIEW_RANGE);
+        setViewportRange(DEFAULT_VIEWPORT_RANGE);
     }, [cancelViewRangeTransition]);
 
     const resetViewportRange = useCallback(() => {
