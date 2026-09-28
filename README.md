@@ -18,12 +18,6 @@ $F(A) = \bigcup_{x \in A} F(x)$ In our setting, we model bounded additive noise 
 
 Rather than tracking every possible point within the noise ball $B_\epsilon(f(x))$ which would be computationally expensive to compute as the noise balls grow, we instead track the boundary evolution through an extended boundary map $F(x,y,nx,ny)=\bigl(f(x,y)+\varepsilon\,\mathbf{nx}',\mathbf{ny}'\bigr)$. Since the maximum uncertainty occurs at the boundary $\partial B_\epsilon(f(x))$ (points at distance exactly $\epsilon$ from the deterministic image), we focus exclusively on tracking how these boundary points evolve.
 
-## Forward invariant-set approximation
-
-For the Hénon map, **Invariant-set propagation** starts from either a random seed in the current computation domain or the position in **Extended start state**. BIST maps that seed deterministically, samples the ε-circle around its image as extended states, transports every outward normal with the inverse-transpose Jacobian, and repeats the forward boundary step for a user-selected number of iterations. The viewport can show all forward fronts or only the latest curve, with optional boundary samples and outward normals. Small transversal self-intersection loops are pruned before a curve is reused.
-
-This is a finite sampled boundary approximation, not a proof that the final curve is invariant. Check convergence by increasing both the boundary point count and the number of forward iterations; the workspace research notes record the loop-erasure assumptions and domain stopping rules in `study_docs/docs/forward_invariant_set_approximation.md`.
-
 ### Bifurcation of the Hénon boundary map with $a \in [0.594, 0.600]$, $b=0.3$, and $\epsilon=0.0625$
 
 ![Bifurcation of the Hénon boundary map when the fixed points of the invariant sets collide with fixed points of dual repellers](./images/henon_boundary_map_bifurcation_a0594_a0600.gif)
