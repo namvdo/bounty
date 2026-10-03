@@ -1,4 +1,4 @@
-# Contributing to BIST
+# Contributing to BOUNTY
 
 Please begin with [the architecture guide](./docs/architecture.md) and [extension guide](./docs/extension_guide.md). Numerical logic belongs in the typed Rust core, browser computation belongs behind the worker protocol, and system metadata belongs in the shared catalog. Avoid adding a parallel code path for one interface control.
 
